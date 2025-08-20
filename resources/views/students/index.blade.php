@@ -6,6 +6,8 @@
     <div class="d-flex justify-content-between align-items-center mb-3">
       <h1 class="h4 m-0">Student List</h1>
       <div class="d-flex gap-2">
+        <a href="{{ route('export.excel') }}" class="btn btn-outline-secondary">Excel</a>
+        <a href="{{ route('export.pdf') }}" class="btn btn-outline-secondary">PDF</a>
         <form method="GET" class="d-flex gap-2">
           <input type="text" name="q" value="{{ $q }}" class="form-control" placeholder="Search">
           <button class="btn btn-outline-secondary" type="submit">Find</button>
@@ -15,7 +17,7 @@
     </div>
 
     <div class="table-responsive">
-      <table class="table table-bordered m-0">
+      <table class="table table-bordered m-0" id="students-table">
         <thead class="table-light">
           <tr>
             <th>ID</th>
@@ -32,7 +34,7 @@
         </thead>
         <tbody>
         @forelse($students as $s)
-          <tr>
+          <tr data-id="{{ $s->id }}">
             <td>{{ $s->id }}</td>
             <td>{{ $s->first_name }}</td>
             <td>{{ $s->last_name }}</td>
@@ -41,7 +43,7 @@
             <td>{{ $s->date_of_birth?->format('Y-m-d') }}</td>
             <td class="text-capitalize">{{ $s->gender }}</td>
             <td>{{ $s->type }}</td>
-            <td>
+            <td class="status-cell">
               @if($s->status)
                 <span class="badge text-bg-success">Active</span>
               @else
@@ -49,17 +51,9 @@
               @endif
             </td>
             <td class="d-flex gap-2">
-              <form action="{{ route('students.toggle', $s) }}" method="POST">
-                @csrf
-                @method('PATCH')
-                <button class="btn btn-sm btn-outline-secondary" type="submit">Toggle</button>
-              </form>
+              <button class="btn btn-sm btn-outline-secondary btn-toggle" data-url="{{ route('students.toggle', $s) }}">Toggle</button>
               <a href="{{ route('students.edit', $s) }}" class="btn btn-sm btn-outline-primary">Edit</a>
-              <form action="{{ route('students.destroy', $s) }}" method="POST" onsubmit="return confirm('Delete this student?')">
-                @csrf
-                @method('DELETE')
-                <button class="btn btn-sm btn-outline-danger" type="submit">Delete</button>
-              </form>
+              <button class="btn btn-sm btn-outline-danger btn-delete" data-url="{{ route('students.destroy', $s) }}">Delete</button>
             </td>
           </tr>
         @empty
@@ -76,4 +70,36 @@
     </div>
   </div>
 </div>
+
+<script>
+(function(){
+  const token = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+  window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token;
+
+  document.querySelectorAll('.btn-toggle').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const url = btn.dataset.url;
+      const row = btn.closest('tr');
+      try {
+        await window.axios.patch(url);
+        const cell = row.querySelector('.status-cell');
+        const isActive = cell.textContent.includes('Active');
+        cell.innerHTML = isActive ? '<span class="badge text-bg-secondary">Inactive</span>' : '<span class="badge text-bg-success">Active</span>';
+      } catch(e){ console.error(e); }
+    });
+  });
+
+  document.querySelectorAll('.btn-delete').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      if(!confirm('Delete this student?')) return;
+      const url = btn.dataset.url;
+      const row = btn.closest('tr');
+      try {
+        await window.axios.delete(url);
+        row.remove();
+      } catch(e){ console.error(e); }
+    });
+  });
+})();
+</script>
 @endsection
