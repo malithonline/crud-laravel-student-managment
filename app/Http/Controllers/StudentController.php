@@ -31,6 +31,9 @@ class StudentController extends Controller
     {
         $data = $this->validateData($request);
         Student::create($data);
+        if ($request->expectsJson()) {
+            return response()->json(['ok' => true, 'message' => 'Saved', 'redirect' => route('students.index')]);
+        }
         return redirect()->route('students.index')->with('success', 'Saved');
     }
 
@@ -43,19 +46,28 @@ class StudentController extends Controller
     {
         $data = $this->validateData($request, $student->id);
         $student->update($data);
+        if ($request->expectsJson()) {
+            return response()->json(['ok' => true, 'message' => 'Updated', 'redirect' => route('students.index')]);
+        }
         return redirect()->route('students.index')->with('success', 'Updated');
     }
 
-    public function destroy(Student $student)
+    public function destroy(Request $request, Student $student)
     {
         $student->delete();
+        if ($request->expectsJson()) {
+            return response()->json(['ok' => true]);
+        }
         return back()->with('success', 'Deleted');
     }
 
-    public function toggle(Student $student)
+    public function toggle(Request $request, Student $student)
     {
         $student->status = !$student->status;
         $student->save();
+        if ($request->expectsJson()) {
+            return response()->json(['ok' => true, 'status' => $student->status]);
+        }
         return back();
     }
 
