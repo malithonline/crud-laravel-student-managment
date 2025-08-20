@@ -123,8 +123,8 @@
             <select name="gender" 
                     class="select select-bordered w-full @error('gender') select-error @enderror">
               <option value="">Select gender</option>
-              <option value="Male" {{ old('gender', $student->gender) == 'Male' ? 'selected' : '' }}>Male</option>
-              <option value="Female" {{ old('gender', $student->gender) == 'Female' ? 'selected' : '' }}>Female</option>
+              <option value="male" {{ old('gender', $student->gender) == 'male' ? 'selected' : '' }}>Male</option>
+              <option value="female" {{ old('gender', $student->gender) == 'female' ? 'selected' : '' }}>Female</option>
             </select>
             @error('gender')
               <label class="label">
