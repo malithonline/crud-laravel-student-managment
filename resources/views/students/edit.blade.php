@@ -3,109 +3,197 @@
 @section('title', 'Edit Student')
 
 @section('content')
-<div class="max-w-4xl mx-auto">
-  <!-- Header -->
-  <div class="mb-6">
-    <div class="flex items-center gap-3 mb-2">
-      <a href="{{ route('students.index') }}" class="btn btn-ghost btn-circle">
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-        </svg>
-      </a>
+<div class="max-w-4xl mx-auto space-y-6">
+
+  <!-- Student form -->
+  <div class="border border-base-300 p-6">
+    <form action="{{ route('students.update', $student) }}" method="POST" class="space-y-6">
+      @csrf
+      @method('PATCH')
+      
+      <!-- Basic info section -->
       <div>
-        <h1 class="text-3xl font-bold text-base-content">Edit Student</h1>
-        <p class="text-base-content opacity-70 mt-1">Update {{ $student->first_name }} {{ $student->last_name }}'s information</p>
+        <h3 class="text-lg font-medium text-base-content mb-4">Basic Information</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <!-- First name -->
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-medium">First Name *</span>
+            </label>
+            <input type="text" 
+                   name="first_name" 
+                   value="{{ old('first_name', $student->first_name) }}" 
+                   class="input input-bordered w-full @error('first_name') input-error @enderror" 
+                   placeholder="Enter first name" 
+                   required>
+            @error('first_name')
+              <label class="label">
+                <span class="label-text-alt text-error">{{ $message }}</span>
+              </label>
+            @enderror
+          </div>
+
+          <!-- Last name -->
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-medium">Last Name *</span>
+            </label>
+            <input type="text" 
+                   name="last_name" 
+                   value="{{ old('last_name', $student->last_name) }}" 
+                   class="input input-bordered w-full @error('last_name') input-error @enderror" 
+                   placeholder="Enter last name" 
+                   required>
+            @error('last_name')
+              <label class="label">
+                <span class="label-text-alt text-error">{{ $message }}</span>
+              </label>
+            @enderror
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
 
-  <!-- Alert for Errors -->
-  <div id="alert" class="alert alert-error mb-6 hidden">
-    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
-    </svg>
-    <div id="alert-message"></div>
-  </div>
+      <!-- Contact info section -->
+      <div>
+        <h3 class="text-lg font-medium text-base-content mb-4">Contact Information</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <!-- Email -->
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-medium">Email *</span>
+            </label>
+            <input type="email" 
+                   name="email" 
+                   value="{{ old('email', $student->email) }}" 
+                   class="input input-bordered w-full @error('email') input-error @enderror" 
+                   placeholder="student@example.com" 
+                   required>
+            @error('email')
+              <label class="label">
+                <span class="label-text-alt text-error">{{ $message }}</span>
+              </label>
+            @enderror
+          </div>
 
-  <!-- Form Card -->
-  <div class="card bg-base-100 border border-base-300">
-    <div class="card-body">
-      <form id="edit-form" action="{{ route('students.update', $student) }}" method="POST" class="space-y-6">
-        @csrf
-        @method('PATCH')
-        @include('students._form')
-        
-        <!-- Form Actions -->
-        <div class="divider"></div>
+          <!-- Contact number -->
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-medium">Contact Number</span>
+            </label>
+            <input type="tel" 
+                   name="contact_number" 
+                   value="{{ old('contact_number', $student->contact_number) }}" 
+                   class="input input-bordered w-full @error('contact_number') input-error @enderror" 
+                   placeholder="Enter contact number">
+            @error('contact_number')
+              <label class="label">
+                <span class="label-text-alt text-error">{{ $message }}</span>
+              </label>
+            @enderror
+          </div>
+        </div>
+      </div>
+
+      <!-- Personal info section -->
+      <div>
+        <h3 class="text-lg font-medium text-base-content mb-4">Personal Information</h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <!-- Date of birth -->
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-medium">Date of Birth</span>
+            </label>
+            <input type="date" 
+                   name="date_of_birth" 
+                   value="{{ old('date_of_birth', $student->date_of_birth ? $student->date_of_birth->format('Y-m-d') : '') }}" 
+                   class="input input-bordered w-full @error('date_of_birth') input-error @enderror"
+                   placeholder="YYYY-MM-DD">
+            @error('date_of_birth')
+              <label class="label">
+                <span class="label-text-alt text-error">{{ $message }}</span>
+              </label>
+            @enderror
+          </div>
+
+          <!-- Gender -->
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-medium">Gender</span>
+            </label>
+            <select name="gender" 
+                    class="select select-bordered w-full @error('gender') select-error @enderror">
+              <option value="">Select gender</option>
+              <option value="Male" {{ old('gender', $student->gender) == 'Male' ? 'selected' : '' }}>Male</option>
+              <option value="Female" {{ old('gender', $student->gender) == 'Female' ? 'selected' : '' }}>Female</option>
+            </select>
+            @error('gender')
+              <label class="label">
+                <span class="label-text-alt text-error">{{ $message }}</span>
+              </label>
+            @enderror
+          </div>
+
+          <!-- Course -->
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-medium">Course</span>
+            </label>
+            <select name="type" 
+                    class="select select-bordered w-full @error('type') select-error @enderror">
+              <option value="">Select course</option>
+              <option value="IT" {{ old('type', $student->type) == 'IT' ? 'selected' : '' }}>IT</option>
+              <option value="Business" {{ old('type', $student->type) == 'Business' ? 'selected' : '' }}>Business</option>
+              <option value="Arts" {{ old('type', $student->type) == 'Arts' ? 'selected' : '' }}>Arts</option>
+            </select>
+            @error('type')
+              <label class="label">
+                <span class="label-text-alt text-error">{{ $message }}</span>
+              </label>
+            @enderror
+          </div>
+        </div>
+      </div>
+
+      <!-- Status section -->
+      <div>
+        <h3 class="text-lg font-medium text-base-content mb-4">Status</h3>
+        <div class="flex items-center gap-6">
+          <label class="flex items-center gap-2 cursor-pointer">
+            <input type="radio" 
+                   name="status" 
+                   value="1" 
+                   class="radio radio-primary" 
+                   {{ old('status', $student->status) == '1' ? 'checked' : '' }}>
+            <span class="label-text">Active</span>
+          </label>
+          <label class="flex items-center gap-2 cursor-pointer">
+            <input type="radio" 
+                   name="status" 
+                   value="0" 
+                   class="radio radio-primary" 
+                   {{ old('status', $student->status) == '0' ? 'checked' : '' }}>
+            <span class="label-text">Inactive</span>
+          </label>
+        </div>
+        @error('status')
+          <label class="label">
+            <span class="label-text-alt text-error">{{ $message }}</span>
+          </label>
+        @enderror
+      </div>
+
+      <!-- Form actions -->
+      <div class="border-t border-base-300 pt-6">
         <div class="flex flex-col sm:flex-row gap-3 sm:justify-end">
-          <a href="{{ route('students.index') }}" class="btn btn-ghost w-full sm:w-auto">
+          <a href="{{ route('students.index') }}" class="btn btn-outline">
             Cancel
           </a>
-          <button type="submit" class="btn btn-primary w-full sm:w-auto">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-            </svg>
+          <button type="submit" class="btn btn-primary">
             Update Student
           </button>
         </div>
-      </form>
-    </div>
+      </div>
+    </form>
   </div>
 </div>
-
-<script>
-(function(){
-  const form = document.getElementById('edit-form');
-  const alertBox = document.getElementById('alert');
-  const alertMessage = document.getElementById('alert-message');
-  
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    alertBox.classList.add('hidden');
-    
-    const submitBtn = form.querySelector('button[type="submit"]');
-    const originalContent = submitBtn.innerHTML;
-    submitBtn.innerHTML = '<span class="loading loading-spinner loading-sm"></span> Updating...';
-    submitBtn.disabled = true;
-    
-    const url = form.action;
-    const data = new FormData(form);
-    data.append('_method', 'PATCH');
-    
-    try {
-      const res = await fetch(url, {
-        method: 'POST',
-        body: data,
-        headers: {
-          'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-          'Accept': 'application/json'
-        }
-      });
-      
-      const result = await res.json();
-      
-      if (res.ok) {
-        if (result.redirect) {
-          window.location.href = result.redirect;
-        }
-      } else {
-        throw new Error(result.message || 'An error occurred');
-      }
-    } catch (err) {
-      if (err.response && err.response.status === 422) {
-        const msgs = Object.values(err.response.data.errors).flat();
-        alertMessage.innerHTML = '<ul class="list-disc list-inside">' + msgs.map(m => `<li>${m}</li>`).join('') + '</ul>';
-        alertBox.classList.remove('hidden');
-      } else {
-        console.error(err);
-        alertMessage.textContent = 'An error occurred. Please try again.';
-        alertBox.classList.remove('hidden');
-      }
-    } finally {
-      submitBtn.innerHTML = originalContent;
-      submitBtn.disabled = false;
-    }
-  });
-})();
-</script>
 @endsection
