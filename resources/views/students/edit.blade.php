@@ -7,7 +7,7 @@
 
   <!-- Student form -->
   <div class="border border-base-300 p-6">
-    <form action="{{ route('students.update', $student) }}" method="POST" class="space-y-6">
+    <form action="{{ route('students.update', $student) }}" method="POST" class="ajax-form space-y-6">
       @csrf
       @method('PATCH')
       

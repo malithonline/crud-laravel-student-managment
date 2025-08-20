@@ -10,9 +10,26 @@
       <h1 class="text-2xl font-bold text-base-content">Students</h1>
       <p class="text-base-content opacity-70">Manage all student records</p>
     </div>
-    <a href="{{ route('students.create') }}" class="btn btn-primary">
-      Add New Student
-    </a>
+    <div class="flex gap-2">
+      @if($students->count() > 0)
+        <div class="dropdown dropdown-end">
+          <label tabindex="0" class="btn btn-outline">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3M3 17V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
+            </svg>
+            Export
+          </label>
+          <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52 border border-base-300">
+            <li><a href="{{ route('export.excel') }}">Download CSV</a></li>
+            <li><a href="{{ route('export.xlsx') }}">Download Excel</a></li>
+            <li><a href="{{ route('export.pdf') }}">Download PDF</a></li>
+          </ul>
+        </div>
+      @endif
+      <a href="{{ route('students.create') }}" class="btn btn-primary">
+        Add New Student
+      </a>
+    </div>
   </div>
 
   <!-- Quick stats -->
@@ -98,9 +115,11 @@
                       @if($student->type)
                         <span class="badge badge-outline badge-sm">{{ $student->type }}</span>
                       @endif
-                      <span class="badge badge-sm {{ $student->status ? 'badge-success' : 'badge-error' }}">
+                      <button class="status-toggle badge badge-sm {{ $student->status ? 'badge-success' : 'badge-error' }} hover:opacity-80 cursor-pointer"
+                              data-url="{{ route('students.toggle', $student) }}"
+                              title="Click to toggle status">
                         {{ $student->status ? 'Active' : 'Inactive' }}
-                      </span>
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -123,9 +142,11 @@
                 @endif
               </td>
               <td class="hidden lg:table-cell text-center py-4">
-                <span class="badge {{ $student->status ? 'badge-success' : 'badge-error' }}">
+                <button class="status-toggle badge {{ $student->status ? 'badge-success' : 'badge-error' }} hover:opacity-80 cursor-pointer"
+                        data-url="{{ route('students.toggle', $student) }}"
+                        title="Click to toggle status">
                   {{ $student->status ? 'Active' : 'Inactive' }}
-                </span>
+                </button>
               </td>
               <td class="text-center py-4">
                 <div class="flex justify-center gap-2">
@@ -138,8 +159,9 @@
                   </a>
                   <form action="{{ route('students.destroy', $student) }}" 
                         method="POST" 
-                        class="inline"
-                        onsubmit="return confirm('Delete this student?')">
+                        class="inline ajax-delete-form"
+                        data-confirm="Delete this student?"
+                        data-student-name="{{ $student->first_name }} {{ $student->last_name }}">
                     @csrf
                     @method('DELETE')
                     <button type="submit" 
