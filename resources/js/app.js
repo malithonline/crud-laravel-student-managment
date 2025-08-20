@@ -78,14 +78,13 @@ async function handleStatusToggle(e) {
     try {
         const response = await axios.patch(url, {}, {
             headers: {
-                'X-Requested-With': 'XMLHttpRequest',
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                'X-Requested-With': 'XMLHttpRequest'
             }
         });
         
         if (response.data.ok) {
             // Update button appearance
-            const badge = button.querySelector('.badge');
+            const badge = button;
             if (response.data.status) {
                 badge.classList.remove('badge-error');
                 badge.classList.add('badge-success');
