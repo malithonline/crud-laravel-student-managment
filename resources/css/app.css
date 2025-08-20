@@ -1,30 +1,6 @@
-@import "bootstrap/dist/css/bootstrap.min.css";
-
-/* square corners */
-:root {
-  --bs-border-radius: 0;
-  --bs-border-radius-sm: 0;
-  --bs-border-radius-lg: 0;
-  --bs-border-radius-xl: 0;
-  --bs-border-radius-xxl: 0;
-  --bs-btn-border-radius: 0;
-  --bs-card-border-radius: 0;
-  --bs-input-border-radius: 0;
-}
-
-/* no hover look */
-a:hover,
-.btn:hover,
-.nav-link:hover,
-.list-group-item-action:hover {
-  color: inherit !important;
-  background-color: inherit !important;
-  text-decoration: none !important;
-  filter: none !important;
-}
-
-/* tables */
-.table td,
-.table th {
-  vertical-align: middle;
+@import "tailwindcss";
+@plugin "daisyui" {
+  themes: light --default, dark --prefersdark;
+  root: ":root";
+  logs: false;
 }
