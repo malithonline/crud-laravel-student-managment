@@ -44,61 +44,6 @@
       </label>
     @enderror
   </div>
-
-  <!-- Contact Number -->
-  <div class="form-control">
-    <label class="label">
-      <span class="label-text font-medium">Contact Number</span>
-    </label>
-    <input name="contact_number" value="{{ old('contact_number', $student->contact_number ?? '') }}" 
-           class="input input-bordered" 
-           placeholder="Enter phone number">
-  </div>
-
-  <!-- Date of Birth -->
-  <div class="form-control">
-    <label class="label">
-      <span class="label-text font-medium">Date of Birth</span>
-    </label>
-    <input type="date" name="date_of_birth" value="{{ old('date_of_birth', $student->date_of_birth ?? '') }}" 
-           class="input input-bordered">
-  </div>
-
-  <!-- Gender -->
-  <div class="form-control">
-    <label class="label">
-      <span class="label-text font-medium">Gender</span>
-    </label>
-    <select name="gender" class="select select-bordered">
-      <option value="">Select Gender</option>
-      <option value="male" @selected(old('gender', $student->gender ?? '')==='male')>Male</option>
-      <option value="female" @selected(old('gender', $student->gender ?? '')==='female')>Female</option>
-    </select>
-  </div>
-
-  <!-- Type -->
-  <div class="form-control">
-    <label class="label">
-      <span class="label-text font-medium">Program Type</span>
-    </label>
-    <select name="type" class="select select-bordered">
-      <option value="">Select Type</option>
-      <option value="IT" @selected(old('type', $student->type ?? '')==='IT')>Information Technology</option>
-      <option value="Business" @selected(old('type', $student->type ?? '')==='Business')>Business</option>
-      <option value="Arts" @selected(old('type', $student->type ?? '')==='Arts')>Arts</option>
-    </select>
-  </div>
-
-  <!-- Status -->
-  <div class="form-control">
-    <label class="label">
-      <span class="label-text font-medium">Status</span>
-    </label>
-    <select name="status" class="select select-bordered">
-      <option value="1" @selected(old('status', ($student->status ?? true) ? '1':'0')==='1')>Active</option>
-      <option value="0" @selected(old('status', ($student->status ?? true) ? '1':'0')==='0')>Inactive</option>
-    </select>
-  </div>
 </div>
 
 <!-- Description (Full Width) -->
