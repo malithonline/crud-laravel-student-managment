@@ -1,11 +1,30 @@
-@import 'tailwindcss';
+@import "bootstrap/dist/css/bootstrap.min.css";
 
-@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
-@source '../../storage/framework/views/*.php';
-@source '../**/*.blade.php';
-@source '../**/*.js';
+/* square corners */
+:root {
+  --bs-border-radius: 0;
+  --bs-border-radius-sm: 0;
+  --bs-border-radius-lg: 0;
+  --bs-border-radius-xl: 0;
+  --bs-border-radius-xxl: 0;
+  --bs-btn-border-radius: 0;
+  --bs-card-border-radius: 0;
+  --bs-input-border-radius: 0;
+}
 
-@theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
+/* no hover look */
+a:hover,
+.btn:hover,
+.nav-link:hover,
+.list-group-item-action:hover {
+  color: inherit !important;
+  background-color: inherit !important;
+  text-decoration: none !important;
+  filter: none !important;
+}
+
+/* tables */
+.table td,
+.table th {
+  vertical-align: middle;
 }
