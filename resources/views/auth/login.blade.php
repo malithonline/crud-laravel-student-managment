@@ -124,11 +124,11 @@
           <div class="text-xs text-base-content space-y-1">
             <div class="flex justify-between">
               <span>Email:</span>
-              <span class="font-mono">admin@example.com</span>
+              <span class="font-mono">malith@mail.com</span>
             </div>
             <div class="flex justify-between">
               <span>Password:</span>
-              <span class="font-mono">password</span>
+              <span class="font-mono">malith1234</span>
             </div>
           </div>
         </div>
