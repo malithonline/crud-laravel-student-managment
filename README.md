@@ -1,5 +1,7 @@
 # Laravel CRUD Application
 
+![Login Page](screenshots/login-page.png)
+
 This is a basic CRUD (Create, Read, Update, Delete) application built with the Laravel framework for managing student records.
 
 ## Features
