@@ -13,6 +13,12 @@ document.addEventListener('DOMContentLoaded', function() {
     toggleButtons.forEach(button => {
         button.addEventListener('click', handleStatusToggle);
     });
+
+    // Handle AJAX delete forms
+    const deleteForms = document.querySelectorAll('.ajax-delete-form');
+    deleteForms.forEach(form => {
+        form.addEventListener('submit', handleAjaxDelete);
+    });
 });
 
 async function handleAjaxForm(e) {
@@ -94,6 +100,58 @@ async function handleStatusToggle(e) {
         }
     } catch (error) {
         showAlert('error', 'Failed to update status');
+    }
+}
+
+async function handleAjaxDelete(e) {
+    e.preventDefault();
+    
+    const form = e.target;
+    const confirmMessage = form.dataset.confirm;
+    const studentName = form.dataset.studentName;
+    
+    if (!confirm(`${confirmMessage}\n\nStudent: ${studentName}`)) {
+        return;
+    }
+    
+    const button = form.querySelector('button[type="submit"]');
+    const originalHtml = button.innerHTML;
+    
+    // Show loading state
+    button.disabled = true;
+    button.innerHTML = '<span class="loading loading-spinner loading-sm"></span>';
+    
+    try {
+        const response = await axios.post(form.action, new FormData(form), {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'Content-Type': 'multipart/form-data'
+            }
+        });
+        
+        if (response.data.ok) {
+            // Remove the student row with animation
+            const row = form.closest('tr');
+            row.style.transition = 'opacity 0.3s ease';
+            row.style.opacity = '0';
+            
+            setTimeout(() => {
+                row.remove();
+                showAlert('success', 'Student deleted successfully');
+                
+                // Check if table is empty and reload page to show empty state
+                const tbody = document.querySelector('tbody');
+                if (tbody.children.length === 0) {
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1000);
+                }
+            }, 300);
+        }
+    } catch (error) {
+        showAlert('error', 'Failed to delete student');
+        button.disabled = false;
+        button.innerHTML = originalHtml;
     }
 }
 

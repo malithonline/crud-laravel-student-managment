@@ -182,6 +182,25 @@
         @enderror
       </div>
 
+      <!-- Description section -->
+      <div>
+        <h3 class="text-lg font-medium text-base-content mb-4">Additional Information</h3>
+        <div class="form-control">
+          <label class="label">
+            <span class="label-text font-medium">Description</span>
+          </label>
+          <textarea name="description" 
+                    rows="4" 
+                    class="textarea textarea-bordered w-full @error('description') textarea-error @enderror" 
+                    placeholder="Additional notes about the student...">{{ old('description', $student->description) }}</textarea>
+          @error('description')
+            <label class="label">
+              <span class="label-text-alt text-error">{{ $message }}</span>
+            </label>
+          @enderror
+        </div>
+      </div>
+
       <!-- Form actions -->
       <div class="border-t border-base-300 pt-6">
         <div class="flex flex-col sm:flex-row gap-3 sm:justify-end">
