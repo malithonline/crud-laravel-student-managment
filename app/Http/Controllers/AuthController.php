@@ -22,10 +22,12 @@ class AuthController extends Controller
         $data = $request->validate([
             'email' => ['required','email'],
             'password' => ['required'],
-            'remember' => ['nullable','boolean'],
         ]);
 
-        $ok = Auth::attempt(['email' => $data['email'], 'password' => $data['password']], $request->boolean('remember'));
+        // Handle remember checkbox - default to false if not present
+        $remember = $request->has('remember') ? true : false;
+
+        $ok = Auth::attempt(['email' => $data['email'], 'password' => $data['password']], $remember);
         if (! $ok) {
             return back()->withErrors(['email' => 'Invalid login'])->withInput();
         }
