@@ -15,5 +15,6 @@ Route::middleware('auth')->group(function () {
     Route::resource('students', StudentController::class);
     Route::patch('students/{student}/toggle', [StudentController::class, 'toggle'])->name('students.toggle');
     Route::get('export/excel', [ExportController::class, 'excel'])->name('export.excel');
+    Route::get('export/xlsx', [ExportController::class, 'xlsx'])->name('export.xlsx');
     Route::get('export/pdf', [ExportController::class, 'pdf'])->name('export.pdf');
 });

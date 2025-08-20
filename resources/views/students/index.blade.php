@@ -6,7 +6,8 @@
     <div class="d-flex justify-content-between align-items-center mb-3">
       <h1 class="h4 m-0">Student List</h1>
       <div class="d-flex gap-2">
-        <a href="{{ route('export.excel') }}" class="btn btn-outline-secondary">Excel</a>
+        <a href="{{ route('export.excel') }}" class="btn btn-outline-secondary">CSV</a>
+        <a href="{{ route('export.xlsx') }}" class="btn btn-outline-secondary">XLSX</a>
         <a href="{{ route('export.pdf') }}" class="btn btn-outline-secondary">PDF</a>
         <form method="GET" class="d-flex gap-2">
           <input type="text" name="q" value="{{ $q }}" class="form-control" placeholder="Search">
