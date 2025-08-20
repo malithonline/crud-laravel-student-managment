@@ -96,6 +96,11 @@ async function handleStatusToggle(e) {
             }
             
             showAlert('success', 'Status updated successfully');
+
+            // Update stats
+            if (response.data.stats) {
+                updateStats(response.data.stats);
+            }
         }
     } catch (error) {
         showAlert('error', 'Failed to update status');
@@ -211,4 +216,14 @@ function showAlert(type, message) {
     setTimeout(() => {
         alert.remove();
     }, 5000);
+}
+
+function updateStats(stats) {
+    const statsContainer = document.querySelector('.stats-container');
+    if (statsContainer) {
+        statsContainer.querySelector('.stat-total').textContent = stats.total;
+        statsContainer.querySelector('.stat-active').textContent = stats.active;
+        statsContainer.querySelector('.stat-inactive').textContent = stats.inactive;
+        statsContainer.querySelector('.stat-with-course').textContent = stats.with_course;
+    }
 }

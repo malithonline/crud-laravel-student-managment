@@ -66,9 +66,23 @@ class StudentController extends Controller
         $student->status = !$student->status;
         $student->save();
         if ($request->expectsJson()) {
-            return response()->json(['ok' => true, 'status' => $student->status]);
+            return response()->json([
+                'ok' => true, 
+                'status' => $student->status,
+                'stats' => $this->getStudentStats(),
+            ]);
         }
         return back();
+    }
+
+    private function getStudentStats()
+    {
+        return [
+            'total' => Student::count(),
+            'active' => Student::where('status', true)->count(),
+            'inactive' => Student::where('status', false)->count(),
+            'with_course' => Student::whereNotNull('type')->count(),
+        ];
     }
 
     private function validateData(Request $request, $id = null)

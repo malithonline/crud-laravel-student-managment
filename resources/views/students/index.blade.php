@@ -34,21 +34,21 @@
 
   <!-- Quick stats -->
   @if($students->count() > 0)
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+    <div class="stats-container grid grid-cols-2 md:grid-cols-4 gap-4">
       <div class="border border-base-300 p-4 text-center">
-        <div class="text-2xl font-bold text-primary">{{ $students->total() }}</div>
+        <div class="stat-total text-2xl font-bold text-primary">{{ $students->total() }}</div>
         <div class="text-sm text-base-content opacity-70">Total Students</div>
       </div>
       <div class="border border-base-300 p-4 text-center">
-        <div class="text-2xl font-bold text-success">{{ $students->where('status', true)->count() }}</div>
+        <div class="stat-active text-2xl font-bold text-success">{{ $students->where('status', true)->count() }}</div>
         <div class="text-sm text-base-content opacity-70">Active</div>
       </div>
       <div class="border border-base-300 p-4 text-center">
-        <div class="text-2xl font-bold text-error">{{ $students->where('status', false)->count() }}</div>
+        <div class="stat-inactive text-2xl font-bold text-error">{{ $students->where('status', false)->count() }}</div>
         <div class="text-sm text-base-content opacity-70">Inactive</div>
       </div>
       <div class="border border-base-300 p-4 text-center">
-        <div class="text-2xl font-bold text-accent">{{ $students->whereNotNull('type')->count() }}</div>
+        <div class="stat-with-course text-2xl font-bold text-accent">{{ $students->whereNotNull('type')->count() }}</div>
         <div class="text-sm text-base-content opacity-70">With Course</div>
       </div>
     </div>
